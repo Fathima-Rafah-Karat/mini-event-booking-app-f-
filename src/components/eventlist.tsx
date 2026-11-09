@@ -120,7 +120,7 @@ const App: React.FC = () => {
                 >
 
 
-                  <div className="mb-2 flex h-[78px] w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-xs text-slate-400">
+                  <div className="mb-2 flex h-50 w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-xs text-slate-400">
 
                     {event.image ? (
                       <img
