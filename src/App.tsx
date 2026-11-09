@@ -1,8 +1,11 @@
-const app=()=>{
-  return(
+import Login from "./components/login";
+
+const App = () => {
+  return (
     <>
-    <h1>booking app</h1>
+      <Login />
     </>
-  )
-}
-export default app;
+  );
+};
+
+export default App;
