@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -8,7 +8,6 @@ const inputClass =
 const labelClass = "block text-left text-xs font-bold text-black mb-1";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +21,6 @@ const Login = () => {
       );
       console.log("Login success:", data);
       toast.success("Login successful!");
-      navigate("/event");
     } catch (error) {
       console.error("Login failed:", error);
       toast.error("Login failed. Please check your email and password.");

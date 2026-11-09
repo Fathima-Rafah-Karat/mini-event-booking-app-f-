@@ -55,12 +55,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full rounded-lg border border-slate-400 bg-white">
+    <div className="min-h-screen bg-white">
 
-      {/* Navbar */}
       <nav className="flex min-h-10 items-center justify-between bg-slate-800 px-5 py-2 text-white">
 
-        <h2 className="text-base font-bold text-white">
+        <h2 className=" text-white text-base font-bold ">
           EventBook
         </h2>
 
@@ -73,10 +72,9 @@ const App: React.FC = () => {
 
       </nav>
 
-      {/* Main Content */}
       <main className="p-6" id="events">
 
-        {/* Search */}
+ 
         <div className="mb-6 flex gap-3">
 
           <input
@@ -96,14 +94,13 @@ const App: React.FC = () => {
 
         </div>
 
-        {/* Error State */}
+ 
         {error && (
           <p className="mb-4 text-sm text-red-500">
             {error}
           </p>
         )}
 
-        {/* Loading State */}
         {loading ? (
           <p className="py-10 text-center text-sm text-slate-500">
             Loading events...
@@ -112,7 +109,7 @@ const App: React.FC = () => {
 
           <>
 
-            {/* Event Cards */}
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
               {filteredEvents.map((event) => (
@@ -122,7 +119,7 @@ const App: React.FC = () => {
                   className="rounded-md border border-slate-400 p-3"
                 >
 
-                  {/* Image */}
+
                   <div className="mb-2 flex h-[78px] w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-xs text-slate-400">
 
                     {event.image ? (
@@ -137,7 +134,6 @@ const App: React.FC = () => {
 
                   </div>
 
-                  {/* Event Details */}
                   <h3 className="mb-1 text-sm font-bold text-slate-900">
                     {event.title}
                   </h3>
@@ -164,7 +160,6 @@ const App: React.FC = () => {
 
                   </div>
 
-                  {/* Book Button */}
                   <button
                     disabled={event.seats === 0}
                     onClick={() => handleBooking(event._id)}
@@ -183,7 +178,6 @@ const App: React.FC = () => {
 
             </div>
 
-            {/* Empty State */}
             {filteredEvents.length === 0 && (
               <div className="py-10 text-center text-sm text-slate-500">
                 No events found.
@@ -194,7 +188,6 @@ const App: React.FC = () => {
 
         )}
 
-        {/* Footer Note */}
         <p className="mt-8 text-xs text-red-500">
           Show loading, error and empty states
         </p>
