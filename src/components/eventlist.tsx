@@ -116,7 +116,7 @@ const App: React.FC = () => {
 
                 <div
                   key={event._id}
-                  className="rounded-md border border-slate-400 p-3"
+                  className="rounded-md border border-slate-400 p-5"
                 >
 
 
