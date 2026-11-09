@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -7,8 +8,6 @@ const inputClass =
 const labelClass = "block text-left text-xs font-bold text-black mb-1";
 
 const Login = () => {
-  const [mode, setMode] = useState<"login" | "register">("login");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,22 +27,6 @@ const Login = () => {
     }
   };
 
-  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        { email, password }
-      );
-      console.log("Register success:", data);
-      toast.success("Account created successfully!");
-    } catch (error) {
-      console.error("Register failed:", error);
-      toast.error("Registration failed. Please try again.");
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm p-6 bg-white border border-gray-300 rounded-md">
@@ -53,113 +36,53 @@ const Login = () => {
         </h1>
 
         <p className=" text-center text-xs text-gray-400 mt-1 mb-6">
-          {mode === "login" ? "Sign in to your account" : "Sign up to your account"}
+          Sign in to your account
         </p>
 
-        {mode === "login" ? (
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label className={labelClass}>
-                Email
-              </label>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label className={labelClass}>
+              Email
+            </label>
 
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={inputClass}
-              />
-            </div>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={inputClass}
+            />
+          </div>
 
-            <div className="mb-4">
-              <label className={labelClass}>
-                Password
-              </label>
+          <div className="mb-4">
+            <label className={labelClass}>
+              Password
+            </label>
 
-              <input
-                type="password"
-                placeholder="********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className={inputClass}
-              />
-            </div>
+            <input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={inputClass}
+            />
+          </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded"
-            >
-              Login
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleRegister}>
-            <div className="mb-4">
-              <label className={labelClass}>
-                Email
-              </label>
-
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={inputClass}
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className={labelClass}>
-                Password
-              </label>
-
-              <input
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className={inputClass}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded"
-            >
-              Register
-            </button>
-          </form>
-        )}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded"
+          >
+            Login
+          </button>
+        </form>
 
         <p className="text-center text-xs text-blue-600 mt-4">
-          {mode === "login" ? (
-            <>
-              No account?{" "}
-              <button
-                type="button"
-                onClick={() => setMode("register")}
-                className="cursor-pointer hover:underline"
-              >
-                Register
-              </button>
-            </>
-          ) : (
-            <>
-              Already have an account?{" "}
-              <button
-                type="button"
-                onClick={() => setMode("login")}
-                className="cursor-pointer hover:underline"
-              >
-                Login
-              </button>
-            </>
-          )}
+          No account?{" "}
+          <Link to="/register" className="hover:underline">
+            Register
+          </Link>
         </p>
 
       </div>
