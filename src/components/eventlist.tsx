@@ -60,7 +60,7 @@ const App: React.FC = () => {
       {/* Navbar */}
       <nav className="flex min-h-10 items-center justify-between bg-slate-800 px-5 py-2 text-white">
 
-        <h2 className="text-base font-bold">
+        <h2 className="text-base font-bold text-white">
           EventBook
         </h2>
 
