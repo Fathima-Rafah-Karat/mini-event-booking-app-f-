@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -8,6 +8,7 @@ const inputClass =
 const labelClass = "block text-left text-xs font-bold text-black mb-1";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,6 +22,7 @@ const Register = () => {
       );
       console.log("Register success:", data);
       toast.success("Account created successfully!");
+      navigate("/event");
     } catch (error) {
       console.error("Register failed:", error);
       toast.error("Registration failed. Please try again.");
