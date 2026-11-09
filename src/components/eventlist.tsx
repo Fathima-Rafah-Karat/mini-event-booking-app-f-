@@ -188,9 +188,7 @@ const App: React.FC = () => {
 
         )}
 
-        <p className="mt-8 text-xs text-red-500">
-          Show loading, error and empty states
-        </p>
+       
 
       </main>
 
