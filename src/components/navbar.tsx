@@ -10,7 +10,7 @@ const Navbar = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogout = async () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
       try {
       await logoutUser();
