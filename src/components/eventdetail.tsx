@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Navbar from "./navbar";
 
 interface Event {
   _id: string;
@@ -51,16 +52,7 @@ export default function EventDetails() {
     <div className="min-h-screen bg-[#fafafa] font-sans">
 
       {/* Navbar */}
-      <header className="flex h-[42px] items-center justify-between bg-[#1e293b] px-[18px] text-white">
-        <h2 className="text-[16px] font-bold">EventBook</h2>
-
-        <div className="flex gap-4 text-[12px]">
-          <a href="#">Events</a>
-          <a href="#">My Bookings</a>
-          <a href="#">Admin</a>
-          <a href="#">Logout</a>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Content */}
       <main className="px-[18px] pt-[15px]">
