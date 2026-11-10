@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { logoutUser } from "../api/auth/logout";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,15 +12,11 @@ const Navbar = () => {
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
 
-    try {
-      await axios.post(
-        "http://localhost:5000/api/auth/logout",
-        {},
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      try {
+      await logoutUser();
       toast.success("Logged out successfully.");
     } catch (error) {
-      console.error("Logout request failed:", error);
+      console.error("Logout failed:", error);
       toast.error("Logged out on this device.");
     } finally {
       localStorage.removeItem("token");

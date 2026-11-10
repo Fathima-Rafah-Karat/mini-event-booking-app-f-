@@ -1,8 +1,13 @@
 import axios from "axios";
 
+export const BASE_URL =
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+$/, "") ||
+  "http://localhost:5000";
+
+export const UPLOADS_URL = `${BASE_URL}/uploads`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
-  withCredentials: true, // keep only if backend uses cookies
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { loginUser } from "../api/auth/login";
 
 const inputClass =
   "w-full border border-gray-300 rounded px-2 py-2 text-xs outline-none focus:border-blue-500";
@@ -15,21 +16,25 @@ const Login = () => {
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password }
-      );
-      console.log("Login success:", data);
-      const token: string | undefined = data?.data?.token;
-      if (token) localStorage.setItem("token", token);
-      toast.success("Login successful!");
-      navigate("/event");
-    } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Login failed. Please check your email and password.");
+   try {
+    const data = await loginUser({ email, password });
+
+    console.log("Login success:", data);
+
+    const token: string | undefined = data?.data?.token;
+
+    if (token) {
+      localStorage.setItem("token", token);
     }
-  };
+
+    toast.success("Login successful!");
+    navigate("/event");
+
+  } catch (error) {
+    console.error("Login failed:", error);
+    toast.error("Login failed. Please check your email and password.");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

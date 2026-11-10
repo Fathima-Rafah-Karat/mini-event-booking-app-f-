@@ -2,6 +2,8 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { registerUser } from "../api/auth/register";
+
 
 const inputClass =
   "w-full border border-gray-300 rounded px-2 py-2 text-xs outline-none focus:border-blue-500";
@@ -15,22 +17,23 @@ const Register = () => {
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        { email, password }
-      );
-      console.log("Register success:", data);
+ try {
+    const data = await registerUser({ email, password });
 
-      const token: string | undefined = data?.data?.token;
-      if (token) localStorage.setItem("token", token);
-      toast.success("Account created successfully!");
-      navigate("/event");
-    } catch (error) {
-      console.error("Register failed:", error);
-      toast.error("Registration failed. Please try again.");
+    const token = data?.token;
+
+    if (token) {
+      localStorage.setItem("token", token);
     }
-  };
+
+    toast.success("Account created successfully!");
+    navigate("/event");
+
+  } catch (error) {
+    toast.error("Registration failed. Please try again.");
+    console.error(error);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
