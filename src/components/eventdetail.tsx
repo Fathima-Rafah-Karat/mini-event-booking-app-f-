@@ -155,7 +155,7 @@ export default function EventDetails() {
                                                 return;
                                             }
                                             if (seats > event.totalSeats) {
-                                                toast.error(`Seats over! Only ${event.totalSeats} seats left.`);
+                                                toast.error(`Seats over! `);
                                                 return;
                                             }
                                             try {
