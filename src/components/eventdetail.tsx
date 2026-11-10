@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import Navbar from "./navbar";
 import { geteventbyid, createBooking } from "../api/eventdetail/details";
