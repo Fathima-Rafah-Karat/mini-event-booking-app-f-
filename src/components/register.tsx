@@ -13,27 +13,32 @@ const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
 
- try {
-    const data = await registerUser({ email, password });
+    try {
+      setLoading(true);
+      const data = await registerUser({ email, password });
 
-    const token = data?.token;
+      const token = data?.token;
 
-    if (token) {
-      localStorage.setItem("token", token);
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      toast.success("Account created successfully!");
+      navigate("/event");
+
+    } catch (error) {
+      toast.error("Registration failed. Please try again.");
+      console.error(error);
+     } finally {
+      setLoading(false);
     }
-
-    toast.success("Account created successfully!");
-    navigate("/event");
-
-  } catch (error) {
-    toast.error("Registration failed. Please try again.");
-    console.error(error);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -81,8 +86,9 @@ const Register = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded"
+            disabled={loading}
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
