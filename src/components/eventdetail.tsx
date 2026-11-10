@@ -86,12 +86,12 @@ export default function EventDetails() {
             <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-[420px_1fr]">
 
               {/* Image */}
-              <div className="flex h-[200px] items-center justify-center overflow-hidden rounded-[6px] bg-[#e5e7eb] text-[13px] text-[#94a3b8]">
+              <div className="flex h-[400px] items-center justify-center overflow-hidden rounded-[6px] bg-[#e5e7eb] text-[13px] text-[#94a3b8]">
                 {event.photo ? (
                   <img
                     src={`${UPLOADS_URL}/${event.photo}`}
                     alt={event.title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                 ) : (
                   "event image"
