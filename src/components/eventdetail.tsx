@@ -9,6 +9,7 @@ interface Event {
   price: number;
   totalSeats: number;
   photo?: string;
+  description?: string;
 }
 
 const UPLOADS_URL = "http://localhost:5000/uploads";
@@ -101,14 +102,13 @@ export default function EventDetails() {
               {/* Details */}
               <div>
 
-                <h1 className="mb-[13px] text-[21px] font-bold leading-[25px] text-[#1e293b]">
+                <h1 className="mb-[13px] text-[25px] font-bold leading-[25px] text-black tracking-[1px] ">
                   {event.title}
                 </h1>
 
                 {/* Description */}
                 <p className="mb-[11px] text-[13px] leading-[20px] text-[#475569]">
-                  Book your seats for {event.title} on {formatDate(event.date)}.{" "}
-                  {event.totalSeats} seats available at Rs. {event.price} per seat.
+                  {event.description}
                 </p>
 
                 {/* Date */}
