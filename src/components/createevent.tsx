@@ -111,8 +111,8 @@ const CreateEvent: FC = () => {
     <div className="min-h-screen bg-[#fafafa] font-sans">
       <Navbar />
 
-      <main className="px-4 py-4 sm:px-6">
-        <div className="mx-auto grid w-full max-w-[580px] grid-cols-1 items-start gap-4 sm:grid-cols-[334px_1fr]">
+      <main className="flex min-h-[calc(100vh-40px)] items-center justify-center px-4 py-6 sm:px-6">
+        <div className="w-full max-w-[334px]">
           <form
             onSubmit={handleSubmit}
             noValidate
@@ -213,9 +213,6 @@ const CreateEvent: FC = () => {
             </button>
           </form>
 
-          <p className="pt-12 text-[11px] text-red-600" aria-live="polite">
-            {Object.keys(errors).length > 0 ? "Please correct the highlighted fields." : ""}
-          </p>
         </div>
       </main>
     </div>
