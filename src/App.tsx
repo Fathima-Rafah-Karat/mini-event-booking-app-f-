@@ -5,6 +5,7 @@ import Register from "./components/register";
 import EventList from "./components/eventlist";
 import EventDetail from "./components/eventdetail";
 import MyBookings from "./components/mybookings";
+import CreateEvent from "./components/createevent";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/event" element={<EventList />} />
         <Route path="/event/:id" element={<EventDetail />} />
         <Route path="/mybookings" element={<MyBookings />} />
+        <Route path="/create-event" element={<CreateEvent />} />
       </Routes>
       <Toaster />
     </Router>

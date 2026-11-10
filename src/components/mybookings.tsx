@@ -104,9 +104,7 @@ const MyBookings: React.FC = () => {
           )}
         </div>
 
-        <p className="mt-6 text-sm font-bold text-red-500">
-          Show loading, error and empty states
-        </p>
+       
       </main>
     </div>
   );
