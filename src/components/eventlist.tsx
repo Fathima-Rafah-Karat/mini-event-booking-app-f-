@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./navbar";
 
@@ -23,6 +24,7 @@ const formatDate = (value: string) =>
   });
 
 const App: React.FC = () => {
+  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
@@ -50,16 +52,6 @@ const App: React.FC = () => {
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(query.toLowerCase())
   );
-
-  const handleBooking = (id: string) => {
-    setEvents((prev) =>
-      prev.map((event) =>
-        event._id === id && event.totalSeats > 0
-          ? { ...event, totalSeats: event.totalSeats - 1 }
-          : event
-      )
-    );
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -160,7 +152,7 @@ const App: React.FC = () => {
 
                   <button
                     disabled={event.totalSeats === 0}
-                    onClick={() => handleBooking(event._id)}
+                    onClick={() => navigate(`/event/${event._id}`)}
                     className={`h-7 w-full rounded text-xs font-bold transition ${
                       event.totalSeats > 0
                         ? "bg-blue-700 text-white hover:bg-blue-800"
