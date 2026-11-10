@@ -24,6 +24,7 @@ const formatDate = (value: string) =>
 const App: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,7 +47,7 @@ const App: React.FC = () => {
   }, []);
 
   const filteredEvents = events.filter((event) =>
-    event.title.toLowerCase().includes(search.toLowerCase())
+    event.title.toLowerCase().includes(query.toLowerCase())
   );
 
   const handleBooking = (id: string) => {
@@ -86,12 +87,16 @@ const App: React.FC = () => {
             type="text"
             placeholder="Search by title..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearch(value);
+              if (value === "") setQuery("");
+            }}
             className="h-7 flex-1 rounded-md border border-slate-400 px-2 text-xs outline-none focus:border-blue-600"
           />
 
           <button
-            onClick={() => setError("")}
+            onClick={() => setQuery(search)}
             className="h-7 w-28 rounded-md bg-blue-700 text-xs font-bold text-white hover:bg-blue-800"
           >
             Search
