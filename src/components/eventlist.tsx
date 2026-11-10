@@ -1,54 +1,58 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Event {
-  _id: number;
+  _id: string;
   title: string;
   date: string;
   price: number;
-  seats: number;
-  image?: string;
+  totalSeats: number;
+  photo?: string;
 }
 
-const initialEvents: Event[] = [
-  {
-    _id: 1,
-    title: "Tech Meetup",
-    date: "12 Dec 2026",
-    price: 500,
-    seats: 24,
-  },
-  {
-    _id: 2,
-    title: "Music Night",
-    date: "18 Dec 2026",
-    price: 800,
-    seats: 3,
-  },
-  {
-    _id: 3,
-    title: "Design Workshop",
-    date: "05 Jan 2027",
-    price: 300,
-    seats: 0,
-  },
-];
+const EVENTS_URL = "http://localhost:5000/api/event/getevent";
+
+const formatDate = (value: string) =>
+  new Date(value).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
 const App: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>(initialEvents);
+  const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const { data } = await axios.get(EVENTS_URL);
+        setEvents(Array.isArray(data) ? data : data.data ?? []);
+      } catch (err) {
+        console.error("Fetch events failed:", err);
+        setError("Failed to load events. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleBooking = (id: number) => {
+  const handleBooking = (id: string) => {
     setEvents((prev) =>
       prev.map((event) =>
-        event._id === id && event.seats > 0
-          ? { ...event, seats: event.seats - 1 }
+        event._id === id && event.totalSeats > 0
+          ? { ...event, totalSeats: event.totalSeats - 1 }
           : event
       )
     );
@@ -122,9 +126,9 @@ const App: React.FC = () => {
 
                   <div className="mb-2 flex h-50 w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-xs text-slate-400">
 
-                    {event.image ? (
+                    {event.photo ? (
                       <img
-                        src={event.image}
+                        src={event.photo}
                         alt={event.title}
                         className="h-full w-full object-cover"
                       />
@@ -139,7 +143,7 @@ const App: React.FC = () => {
                   </h3>
 
                   <p className="mb-1 text-xs text-slate-400">
-                    {event.date}
+                    {formatDate(event.date)}
                   </p>
 
                   <div className="mb-4 flex items-center justify-between text-xs font-bold">
@@ -148,9 +152,9 @@ const App: React.FC = () => {
                       Rs. {event.price}
                     </span>
 
-                    {event.seats > 0 ? (
+                    {event.totalSeats > 0 ? (
                       <span>
-                        {event.seats} seats left
+                        {event.totalSeats} seats left
                       </span>
                     ) : (
                       <span className="text-red-600">
@@ -161,15 +165,15 @@ const App: React.FC = () => {
                   </div>
 
                   <button
-                    disabled={event.seats === 0}
+                    disabled={event.totalSeats === 0}
                     onClick={() => handleBooking(event._id)}
                     className={`h-7 w-full rounded text-xs font-bold transition ${
-                      event.seats > 0
+                      event.totalSeats > 0
                         ? "bg-blue-700 text-white hover:bg-blue-800"
                         : "cursor-not-allowed border border-slate-600 bg-white text-slate-800"
                     }`}
                   >
-                    {event.seats > 0 ? "View / Book" : "Sold out"}
+                    {event.totalSeats > 0 ? "View / Book" : "Sold out"}
                   </button>
 
                 </div>
