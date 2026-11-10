@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 import Navbar from "./navbar";
 
 interface Event {
@@ -40,6 +41,7 @@ export default function EventDetails() {
       } catch (err) {
         console.error("Fetch event failed:", err);
         setError("Failed to load event. Please try again.");
+        toast.error("Failed to load event. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -131,7 +133,16 @@ export default function EventDetails() {
                   />
 
                   <button
-                    onClick={() => setMessage("Booking successful!")}
+                    onClick={() => {
+                      if (!event) return;
+                      if (!seats || seats < 1 || seats > event.totalSeats) {
+                        toast.error("Please select a valid number of seats.");
+                        return;
+                      }
+                      setEvent({ ...event, totalSeats: event.totalSeats - seats });
+                      setMessage("Booking successful!");
+                      toast.success("Booking successful!");
+                    }}
                     className="h-[28px] w-[168px] rounded-[4px] bg-[#3454df] text-[12px] font-bold text-white hover:bg-blue-700"
                   >
                     Book Now
