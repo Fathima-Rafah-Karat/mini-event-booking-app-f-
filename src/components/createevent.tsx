@@ -69,7 +69,7 @@ const CreateEvent: FC = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
-      toast.error("Please correct the highlighted fields.");
+      toast.error("Please fill the form completely.");
       return;
     }
 
@@ -105,7 +105,7 @@ const CreateEvent: FC = () => {
 
   const inputClass =
     "h-[25px] w-full rounded-[4px] border border-[#a8b2c1] bg-white px-2 text-[12px] text-slate-800 outline-none focus:border-blue-600";
-  const labelClass = "mb-[3px] block text-[11px] font-medium text-slate-800";
+  const labelClass = "mb-[1px] block text-[14px] font-semibold text-slate-800";
 
   return (
     <div className="min-h-screen bg-[#fafafa] font-sans">
@@ -118,11 +118,11 @@ const CreateEvent: FC = () => {
             noValidate
             className="w-full rounded-[6px] border border-[#a8b2c1] bg-white px-6 py-[10px]"
           >
-            <h1 className="mb-[13px] text-center text-[16px] font-bold text-slate-800">
-              Create Event <span className="font-normal">(admin only)</span>
+            <h1 className="mb-[13px] text-center text-[20px] font-bold text-slate-800 tracking-tight">
+              Create Event (admin only)
             </h1>
 
-            <div className="mb-[17px]">
+            <div className="mb-[10px]">
               <label className={labelClass} htmlFor="event-title">Title</label>
               <input
                 id="event-title"
