@@ -21,6 +21,9 @@ const Register = () => {
         { email, password }
       );
       console.log("Register success:", data);
+
+      const token: string | undefined = data?.data?.token;
+      if (token) localStorage.setItem("token", token);
       toast.success("Account created successfully!");
       navigate("/event");
     } catch (error) {
