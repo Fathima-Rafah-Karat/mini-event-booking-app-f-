@@ -12,6 +12,7 @@ interface Event {
 }
 
 const EVENTS_URL = "http://localhost:5000/api/event/getevent";
+const UPLOADS_URL = "http://localhost:5000/uploads";
 
 const formatDate = (value: string) =>
   new Date(value).toLocaleDateString("en-GB", {
@@ -128,7 +129,7 @@ const App: React.FC = () => {
 
                     {event.photo ? (
                       <img
-                        src={event.photo}
+                        src={`${UPLOADS_URL}/${event.photo}`}
                         alt={event.title}
                         className="h-full w-full object-cover"
                       />
