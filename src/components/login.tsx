@@ -12,29 +12,32 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+     if (loading) return;
+    try {
+      setLoading(true);
+      const data = await loginUser({ email, password });
 
-   try {
-    const data = await loginUser({ email, password });
+      console.log("Login success:", data);
 
-    console.log("Login success:", data);
+      const token: string | undefined = data?.data?.token;
 
-    const token: string | undefined = data?.data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
 
-    if (token) {
-      localStorage.setItem("token", token);
+      toast.success("Login successful!");
+      navigate("/event");
+
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Please check your email and password.");
+     } finally {
+      setLoading(false);
     }
-
-    toast.success("Login successful!");
-    navigate("/event");
-
-  } catch (error) {
-    console.error("Login failed:", error);
-    toast.error("Login failed. Please check your email and password.");
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -82,8 +85,9 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded"
+            disabled={loading}
           >
-            Login
+           {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
