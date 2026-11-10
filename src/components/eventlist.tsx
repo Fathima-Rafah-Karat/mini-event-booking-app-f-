@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./navbar";
-import { applySeatsLeft } from "../lib/seats";
 
 interface Event {
   _id: string;
@@ -39,7 +38,7 @@ const App: React.FC = () => {
       try {
         const { data } = await axios.get(EVENTS_URL);
         const list = Array.isArray(data) ? data : data.data ?? [];
-        setEvents(applySeatsLeft(list));
+        setEvents(list);
       } catch (err) {
         console.error("Fetch events failed:", err);
         setError("Failed to load events. Please try again.");

@@ -4,6 +4,7 @@ import Login from "./components/login";
 import Register from "./components/register";
 import EventList from "./components/eventlist";
 import EventDetail from "./components/eventdetail";
+import MyBookings from "./components/mybookings";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/event" element={<EventList />} />
         <Route path="/event/:id" element={<EventDetail />} />
+        <Route path="/mybookings" element={<MyBookings />} />
       </Routes>
       <Toaster />
     </Router>

@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Navbar from "./navbar";
-import { getSeatsLeft, saveSeatsLeft } from "../lib/seats";
 
 interface Event {
   _id: string;
@@ -37,8 +36,7 @@ export default function EventDetails() {
       setError("");
       try {
         const { data } = await axios.get(`http://localhost:5000/api/event/${id}`);
-        const fetched = data.data as Event | null;
-        setEvent(fetched ? { ...fetched, totalSeats: getSeatsLeft(fetched) } : null);
+        setEvent((data.data as Event) ?? null);
       } catch (err) {
         console.error("Fetch event failed:", err);
         setError("Failed to load event. Please try again.");
@@ -145,13 +143,18 @@ export default function EventDetails() {
                         return;
                       }
                       try {
+                        const token = localStorage.getItem("token");
                         const { data } = await axios.post(
-                          `http://localhost:5000/api/event/${event._id}/book`,
-                          { seats }
+                          `http://localhost:5000/api/book/${event._id}/book`,
+                          { eventId: event._id, seats },
+                          { headers: { Authorization: `Bearer ${token ?? ""}` } }
                         );
-                        const updated = data.data as Event;
-                        setEvent({ ...event, totalSeats: updated.totalSeats });
-                        saveSeatsLeft(event._id, updated.totalSeats);
+                        const remainingSeats = data?.remainingSeats;
+                        if (typeof remainingSeats === "number") {
+                          setEvent({ ...event, totalSeats: remainingSeats });
+                        } else {
+                          setEvent({ ...event, totalSeats: event.totalSeats - seats });
+                        }
                         toast.success("Booking successful!");
                       } catch (err) {
                         console.error("Booking failed:", err);
