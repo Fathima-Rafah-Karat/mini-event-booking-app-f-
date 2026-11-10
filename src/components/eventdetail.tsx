@@ -15,7 +15,19 @@ interface Event {
     description?: string;
 }
 
-const UPLOADS_URL = "http://localhost:5000/uploads";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const getImageUrl = (photo?: string) => {
+    if (!photo) return "/fallback.jpg";
+
+    if (photo.startsWith("http")) return photo;
+
+    const imagePath = photo.replace(/^\/+/, "");
+
+    return imagePath.startsWith("uploads/")
+        ? `${BASE_URL}/${imagePath}`
+        : `${BASE_URL}/uploads/${imagePath}`;
+};
 
 const formatDate = (value: string) =>
     new Date(value).toLocaleDateString("en-GB", {
@@ -84,9 +96,12 @@ export default function EventDetails() {
                             <div className="flex h-[400px] items-center justify-center overflow-hidden rounded-[6px] bg-[#e5e7eb] text-[13px] text-[#94a3b8]">
                                 {event.photo ? (
                                     <img
-                                        src={`${UPLOADS_URL}/${event.photo}`}
+                                        src={getImageUrl(event.photo)}
                                         alt={event.title}
                                         className="h-full w-full object-contain"
+                                        onError={(e) => {
+                                            e.currentTarget.src = "/fallback.jpg";
+                                        }}
                                     />
                                 ) : (
                                     "event image"
