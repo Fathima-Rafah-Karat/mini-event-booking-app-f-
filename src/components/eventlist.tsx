@@ -116,7 +116,7 @@ const App: React.FC = () => {
                       <img
                         src={`${UPLOADS_URL}/${event.photo}`}
                         alt={event.title}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-contain"
                       />
                     ) : (
                       "image"
