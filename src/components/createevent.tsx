@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Navbar from "./navbar";
+import { createevent } from "../api/createevent/create";
 
 interface EventForm {
   title: string;
@@ -83,7 +84,7 @@ const CreateEvent: FC = () => {
 
     setSaving(true);
     try {
-      await axios.post("http://localhost:5000/api/event/create", payload);
+      await createevent(payload);
       toast.success("Event created successfully!");
       navigate("/event");
     } catch (error) {
