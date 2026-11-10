@@ -15,18 +15,27 @@ interface Event {
     description?: string;
 }
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL?.replace(/\/+$/, "");
 
 const getImageUrl = (photo?: string) => {
-    if (!photo) return "/fallback.jpg";
+    if (!photo || photo.trim() === "") {
+        return "/fallback.jpg";
+    }
 
-    if (photo.startsWith("http")) return photo;
+    // If photo is already a complete URL
+    if (photo.startsWith("http://") || photo.startsWith("https://")) {
+        return photo;
+    }
 
+    // Remove starting slash
     const imagePath = photo.replace(/^\/+/, "");
 
-    return imagePath.startsWith("uploads/")
-        ? `${BASE_URL}/${imagePath}`
-        : `${BASE_URL}/uploads/${imagePath}`;
+    // Create correct backend image URL
+    if (imagePath.startsWith("uploads/")) {
+        return `${BASE_URL}/${imagePath}`;
+    }
+
+    return `${BASE_URL}/uploads/${imagePath}`;
 };
 
 const formatDate = (value: string) =>
@@ -93,19 +102,21 @@ export default function EventDetails() {
                         <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-[420px_1fr]">
 
                             {/* Image */}
-                            <div className="flex h-[400px] items-center justify-center overflow-hidden rounded-[6px] bg-[#e5e7eb] text-[13px] text-[#94a3b8]">
-                                {event.photo ? (
-                                    <img
-                                        src={getImageUrl(event.photo)}
-                                        alt={event.title}
-                                        className="h-full w-full object-contain"
-                                        onError={(e) => {
-                                            e.currentTarget.src = "/fallback.jpg";
-                                        }}
-                                    />
-                                ) : (
-                                    "event image"
-                                )}
+                            {/* Image */}
+                            <div className="flex h-[400px] items-center justify-center overflow-hidden rounded-[6px] bg-[#e5e7eb]">
+
+                                <img
+                                    src={getImageUrl(event.photo)}
+                                    alt={event.title}
+                                    className="h-full w-full object-contain"
+                                    onError={(e) => {
+                                        console.error("Photo loading error:", e.currentTarget.src);
+
+                                        e.currentTarget.onerror = null;
+                                        e.currentTarget.src = "/fallback.jpg";
+                                    }}
+                                />
+
                             </div>
 
                             {/* Details */}
