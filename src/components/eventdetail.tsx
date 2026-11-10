@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Navbar from "./navbar";
+import { getSeatsLeft, saveSeatsLeft } from "../lib/seats";
 
 interface Event {
   _id: string;
@@ -36,7 +37,8 @@ export default function EventDetails() {
       setError("");
       try {
         const { data } = await axios.get(`http://localhost:5000/api/event/${id}`);
-        setEvent(data.data ?? null);
+        const fetched = data.data as Event | null;
+        setEvent(fetched ? { ...fetched, totalSeats: getSeatsLeft(fetched) } : null);
       } catch (err) {
         console.error("Fetch event failed:", err);
         setError("Failed to load event. Please try again.");
@@ -132,14 +134,33 @@ export default function EventDetails() {
                   />
 
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       if (!event) return;
-                      if (!seats || seats < 1 || seats > event.totalSeats) {
+                      if (!seats || seats < 1) {
                         toast.error("Please select a valid number of seats.");
                         return;
                       }
-                      setEvent({ ...event, totalSeats: event.totalSeats - seats });
-                      toast.success("Booking successful!");
+                      if (seats > event.totalSeats) {
+                        toast.error(`Seats over! Only ${event.totalSeats} seats left.`);
+                        return;
+                      }
+                      try {
+                        const { data } = await axios.post(
+                          `http://localhost:5000/api/event/${event._id}/book`,
+                          { seats }
+                        );
+                        const updated = data.data as Event;
+                        setEvent({ ...event, totalSeats: updated.totalSeats });
+                        saveSeatsLeft(event._id, updated.totalSeats);
+                        toast.success("Booking successful!");
+                      } catch (err) {
+                        console.error("Booking failed:", err);
+                        if (axios.isAxiosError(err) && err.response?.data?.message) {
+                          toast.error(err.response.data.message as string);
+                        } else {
+                          toast.error("Booking failed. Please try again.");
+                        }
+                      }
                     }}
                     className="h-[28px] w-[168px] rounded-[4px] bg-[#3454df] text-[12px] font-bold text-white hover:bg-blue-700"
                   >
