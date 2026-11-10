@@ -27,7 +27,6 @@ export default function EventDetails() {
   const { id } = useParams();
   const [event, setEvent] = useState<Event | null>(null);
   const [seats, setSeats] = useState(1);
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -140,7 +139,6 @@ export default function EventDetails() {
                         return;
                       }
                       setEvent({ ...event, totalSeats: event.totalSeats - seats });
-                      setMessage("Booking successful!");
                       toast.success("Booking successful!");
                     }}
                     className="h-[28px] w-[168px] rounded-[4px] bg-[#3454df] text-[12px] font-bold text-white hover:bg-blue-700"
@@ -149,11 +147,6 @@ export default function EventDetails() {
                   </button>
 
                 </div>
-
-                {/* Message */}
-                <p className="mt-[36px] text-[11px] text-red-500">
-                  {message || "Show success or error message"}
-                </p>
 
               </div>
             </div>
